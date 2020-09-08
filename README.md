@@ -61,7 +61,7 @@ cd ~/dotfiles
 Install [**Homebrew**](https://brew.sh/)
 
 ```bash
-/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+/usr/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 ```
 
 Allow apps downloaded from anywhere before installing with Brew
