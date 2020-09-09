@@ -3,7 +3,7 @@ Tools and instructions to speed up and automate my setup and configurations afte
 
 
 ## Requirements
-Clean installation of MacOS, preferably _Mojave_ or later as that's what this setup has been tested on.
+MacOS, the following setup has a clean installation in mind.
 
 
 ## Make your own
@@ -11,7 +11,7 @@ If you want to make your own setup based on this one I recommend the following s
 
 - Fork the repository
 - Edit the Brewfile
-  - Some apps however are required for later steps (e.g. cask-fonts, font-meslo-nerd-font, iTerm2, mas, nvm, python, rbenv)
+  - Some apps however are required for later steps (e.g. nerd-font, iTerm2, mas, nvm, neofetch, jq, rbenv, p10k, zsh-*)
 - Edit settings.sh to suit your own preferences
 - Edit mixin/aliases
   - PS. before you start adding your own aliases I recommend running `alias` and looking at what is already there, a lot of stuff comes with the Oh-My-Zsh plugins.
@@ -37,13 +37,6 @@ git config --global github.user eyyrun
 git config --global core.excludesfile ~/.gitignore
 echo .DS_Store >> ~/.gitignore
 ```
-Other configurations ~~I specify~~
-
-```bash
-git config --global github.token your_token_here
-git config --global core.editor "code -w"
-git config --global color.ui true
-```
 
 ## Clone the repository
 Clone the repository and hide it in Finder with `chflags`
@@ -61,7 +54,7 @@ cd ~/dotfiles
 Install [**Homebrew**](https://brew.sh/)
 
 ```bash
-/usr/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 ```
 
 Allow apps downloaded from anywhere before installing with Brew
@@ -74,8 +67,7 @@ Install applications from **Brewfile** and optionally a secondary file, `Brewfil
 
 ```bash
 cd ~/dotfiles
-brew bundle
-brew bundle --file=Brewfile2
+brew bundle -v
 ```
 
 ## SSH keys
@@ -88,16 +80,47 @@ chmod 600 ~/.ssh/id_rsa.pub
 chmod 700 ~/.ssh
 ```
 
+Create `~/.ssh/config` and modify it to automatically load keys into ssh-agent and store passphrases in keychain.
+
+```bash
+touch ~/.ssh/config
+# Add to following to the config file
+Host *
+  AddKeysToAgent yes
+  UseKeychain yes
+  IdentityFile ~/.ssh/id_rsa
+```
+
+Add the private key to the `ssh-agent` and store the potential passphrase in the keychain.
+
+```bash
+ssh-add -K ~/.ssh/id_rsa
+```
+
 If the public **SSH-key** has been added to [GitHub](https://github.com/settings/ssh), the connection can be tested
 
 ```bash
 ssh -T git@github.com
 ```
 
+### GPG keys, Github
+
+Setup `~/.gnupg` folder from backup, checkout this [gist](https://gist.github.com/troyfontaine/18c9146295168ee9ca2b30c00bd1b41e) for how to GPG.
+
+```bash
+gpg -k --keyid-format LONG # Copy the key for next step
+git config --global user.signingkey <KEY>
+git config --global commit.gpgsign true
+git config --global gpg.program $(which gpg)
+echo "pinentry-program /usr/local/bin/pinentry-mac" > ~/.gnupg/gpg-agent.conf
+echo "use-agent" > ~/.gnupg/gpg.conf
+```
+
+
 ## MacOS system preferences
 
 Run `settings.sh` to apply custom preferences for Finder, Menu bar, Dock etc.
-> These settings are what is most likely to break as the preferences and corresponding files change between Mac OS versions. To be safe, skip running this script (except for maybe the last osascript step in the file that updates the terminal.app look) and change settings manually.
+> These settings are what is most likely to break as the preferences and corresponding files change between Mac OS versions. To be safe, skip running this script (except the last osascript step in the file that updates the look of terminal.app) and change settings manually.
 
 ```bash
 cd ~/dotfiles
@@ -106,9 +129,9 @@ chmod +x settings.sh
 ```
 
 
-## Make the shell awesome with iTerm2, Zsh & Oh-My-Zsh
+## Make the shell awesome with iTerm2, Zsh, Oh-My-Zsh, Powerlevel10k & neofetch
 
-![iTerm2 Screenshot](https://i.imgur.com/kgrwG9q.png "iTerm2 after customization")
+![iTerm2 Screenshot](https://i.imgur.com/NLdVDPS.png "iTerm2 after customization")
 
 Set preferences for iTerm2
 
@@ -123,37 +146,25 @@ Install **[Oh-My-Zsh](https://github.com/robbyrussell/oh-my-zsh)**
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 ```
 
-Install [**Powerlevel9**](https://github.com/bhilburn/powerlevel9k) theme
+### Zsh Profile +
+
+Source the ZSH profile and other config files (optionally restart Terminal/iTerm2 after creating the symlink)
 
 ```bash
-git clone https://github.com/bhilburn/powerlevel9k.git ~/.oh-my-zsh/custom/themes/powerlevel9k
-```
-
-Install custom zsh-plugins
-
-[zsh-**autosuggestions**](https://github.com/zsh-users/zsh-autosuggestions), [zsh-**completions**](https://github.com/zsh-users/zsh-completions), [zsh-**history-substring-search**](https://github.com/zsh-users/zsh-history-substring-search) and [zsh-**syntax-highlighting**](https://github.com/zsh-users/zsh-syntax-highlighting)
-
-```bash
-git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM}/plugins/zsh-autosuggestions
-git clone https://github.com/zsh-users/zsh-completions ${ZSH_CUSTOM}/plugins/zsh-completions
-git clone https://github.com/zsh-users/zsh-history-substring-search ${ZSH_CUSTOM}/plugins/zsh-history-substring-search
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM}/plugins/zsh-syntax-highlighting
-```
-
-### Zsh Profile
-
-Source the ZSH profile (optionally restart Terminal/iTerm2 after creating the symlink)
-
-```bash
-rm ~/.zshrc
-ln -s ~/dotfiles/.zshrc ~/
+# Symlink neofetch config and .vimrc
+touch ~/.hushlogin
+mkdir -p ~/.config/neofetch
+ln -svf ~/dotfiles/neofetch/config.conf ~/.config/neofetch/
+ln -svf ~/dotfiles/.vimrc ~/
+# Symlink .zshrc
+ln -svf ~/dotfiles/.zshrc ~/
 source ~/.zshrc
 ```
 
-Install **Pygments** for colorized `cat` with `ccat` from the [_colorize_](https://github.com/robbyrussell/oh-my-zsh/tree/master/plugins/colorize) plugin.
-
+If you get compaudit insecure directories error run:
 ```bash
-pip3 install pygments
+compaudit | xargs chmod g-w
+compaudit | xargs chmod o-w
 ```
 
 
@@ -187,7 +198,7 @@ nvm use default
 Install global packages from `npmfile`
 
 ```bash
-xargs -L1 npm i -g < ~/dotfiles/npmfile
+cat ~/dotfiles/npmfile | xargs -L1 npm i -g > /dev/null
 ```
 
 
@@ -198,8 +209,8 @@ With `pyenv` installed, get the latest version of python
 PYTHON_LATEST=$(pyenv install --list | sed 's/^  //' | grep '^\d' | grep --invert-match 'dev\|a\|b' | tail -1)
 PYTHON_CONFIGURE_OPTS="--enable-framework"
 pyenv install $PYTHON_LATEST
-pyenv versions
 pyenv global $PYTHON_LATEST
+pip install --upgrade pip
 ```
 
 ## Visual Studio Code settings
@@ -215,20 +226,29 @@ curl -s https://api.github.com/gists/8b47741d950a86e46222eb8bfc293a9a \
 | grep name
 ```
 
+## openpyn - NordVPN cli
+
+With wget, openvpn and python3 installed using pyenv, install [openpyn](https://github.com/jotyGill/openpyn-nordvpn)
+```bash
+pip install openpyn
+sudo brew services start openvpn
+sudo openpyn --init
+```
+
 
 ## Dropbox Desktop sync
 
 Sync your Desktop between workstations, further instructions [here](https://www.imore.com/how-sync-your-documents-desktop-and-any-other-folder-dropbox)
 
 ```bash
-ln -s ~/Desktop ~/Dropbox/
+ln -sv ~/Desktop ~/Dropbox/
 ```
 
 
 ## Private Config files
 
 I keep some config files, shell aliases and application preferences in a [private branch](https://24ways.org/2013/keeping-parts-of-your-codebase-private-on-github/) of this repository and copy them into their designated destination after installing the apps. 
-These files might contain Software Licenses or other private data.
+These files might contain Software Licenses, network addresses and other private data.
 
 ### Spotify CLI
 
@@ -248,12 +268,15 @@ Adobe Photoshop
 Canon EOS Utility
 ```
 
-## Post installation cleanup
+## Stay up to date
 
-Cleanup and update Brew installations (Run this command regularly to update software)
+Run these commands regularly to stay up to date
 
 ```bash
+# Brew upgrade, update and cleanup
 bubu
+# npm update
+npmu
 ```
 
 ## Credits

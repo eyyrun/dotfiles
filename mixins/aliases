@@ -61,7 +61,7 @@ alias afk="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resource
 # Print each PATH entry on a separate line
 alias path='echo -e ${PATH//:/\\n}'
 
-# Streams
+# Streams - Might require VPN
 alias tv='alias | grep "[s]treamlink" | grep -o ".*=" | cut -d= -f1'
 alias stopvideo='kill $(ps aux | grep "[V]LC" | grep -v "[V]LC -Idummy" | awk '\''{print $2}'\'')'
 alias ruv='streamlink https://www.ruv.is/ruv best NUL &'
@@ -102,6 +102,41 @@ alias rondo='stopradio; vlc -Idummy http://netradio.ruv.is/rondo.mp3 NUL &'
 alias ruvnull='stopradio; vlc -Idummy http://netradio.ruv.is/ruvnull.mp3 NUL &'
 alias xid='stopradio; vlc -Idummy http://icecast.365net.is:8000/orbXid.aac NUL &'
 
+alias nrkp1='stopradio; vlc -Idummy https://lyd.nrk.no/nrk_radio_p1_ostlandssendingen_aac_h NUL &'
+alias nrkp2='stopradio; vlc -Idummy https://lyd.nrk.no/nrk_radio_p2_aac_h NUL &'
+alias nrkp3='stopradio; vlc -Idummy https://lyd.nrk.no/nrk_radio_p3_aac_h NUL &'
+alias nrkp13='stopradio; vlc -Idummy https://lyd.nrk.no/nrk_radio_p13_aac_h NUL &'
+alias nrkmp3='stopradio; vlc -Idummy https://lyd.nrk.no/nrk_radio_mp3_aac_h NUL &'
+
+# Spotify
+alias jamc='spotify play uri spotify:playlist:37i9dQZF1DZ06evO2BbbSy'
+
+# Podcasts
+alias podcasts="newsboat -u ~/.newsboat/podcasts -c ~/.newsboat/podcast-cache.db"
+alias playq='(cat ~/.newsboat/queue | cut -d " " -f1 | xargs vlc NUL &)'
+alias clearq='echo > ~/.newsboat/queue'
+
+# VLC - Youtube
+alias ytfeed="newsboat -u ~/.newsboat/youtube -c ~/.newsboat/youtube-cache.db"
+alias update-youtube-lua="curl https://raw.githubusercontent.com/videolan/vlc/master/share/lua/playlist/youtube.lua > /Applications/VLC.app/Contents/MacOS/share/lua/playlist/youtube.luac"
+
+# Currencies
+btc() { curl -s https://blockchain.info/ticker | jq '.USD.last,.ISK.last' | xargs echo | LC_ALL='en_US' awk '{printf "$%'"'"'d / %'"'"'dkr\n",$1,$2}' }
+eur() { curl -s https://api.exchangeratesapi.io/latest\?base\=EUR\&symbols\=ISK | jq '.rates.ISK' | LC_ALL='en_US' awk '{printf "%dkr\n",$1}' }
+usd() { curl -s https://api.exchangeratesapi.io/latest\?base\=USD\&symbols\=ISK | jq '.rates.ISK' | LC_ALL='en_US' awk '{printf "%dkr\n",$1}' }
+
+# VPN & DNS service
+alias nord=openpyn
+alias googledns="networksetup -setdnsservers Wi-Fi 8.8.8.8 8.8.4.4"
+alias resetdns="networksetup -setdnsservers Wi-Fi \"Empty\""
+alias norddns="networksetup -setdnsservers Wi-Fi 103.86.99.100 103.86.96.100 208.67.222.220"
+
+# Batch rename iPhone Photos
+alias rename-iphone-photos="exiftool '-filename<CreateDate' -d '%Y-%m-%d %H.%M.%S%%-c.%%le' -r"
+
+# Browsers
+alias chrome="open -a 'Google Chrome'"
+alias firefox="open -a 'Firefox'"
 
 
 # Aliases from https://gist.github.com/natelandau/10654137
@@ -136,7 +171,6 @@ ffe () { /usr/bin/find . -name '*'"$@" ; }  # ffe:      Find file whose name end
 
 # alias myip='curl ip.appspot.com'                    # myip:         Public facing IP Address
 alias netCons='lsof -i'                             # netCons:      Show all open TCP/IP sockets
-alias flushDNS='dscacheutil -flushcache'            # flushDNS:     Flush out the DNS Cache
 alias lsock='sudo /usr/sbin/lsof -i -P'             # lsock:        Display open sockets
 alias lsockU='sudo /usr/sbin/lsof -nP | grep UDP'   # lsockU:       Display only open UDP sockets
 alias lsockT='sudo /usr/sbin/lsof -nP | grep TCP'   # lsockT:       Display only open TCP sockets
@@ -151,6 +185,8 @@ alias showBlocked='sudo ipfw list'                  # showBlocked:  All ipfw rul
 alias myip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias localip="ipconfig getifaddr en0"
 alias ips="ifconfig -a | grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[0-9]\+\)\|[a-fA-F0-9:]\+\)' | awk '{ sub(/inet6? (addr:)? ?/, \"\"); print }'"
+ip() { curl -s -m 5 ifconfig.co/json | jq '.ip,.city,.country,.asn_org' | xargs echo | awk '{printf "%s %s, %s - %s\n",$1,$2,$3,$4}' }
+dns() { print -P "$FG[003]DNS Configuration:$reset_color " ; scutil --dns | sed -ne '/resolver #1/,$ p' | head -n +6 }
 
 # Flush Directory Service cache
 alias flushdns='sudo dscacheutil -flushcache;sudo killall -HUP mDNSResponder;echo "✌️ DNS flushed"'
