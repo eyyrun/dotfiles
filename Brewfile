@@ -36,11 +36,11 @@ cask "homebrew/cask-versions/adoptopenjdk8"
 cask "android-sdk"
 cask "bartender"
 cask "dictionaries"
-# cask "discord"
-# cask "docker"
-# cask "dotnet-sdk"
+cask "discord"
+cask "docker"
+cask "dotnet-sdk"
 cask "dropbox"
-# cask "firefox"
+cask "firefox"
 cask "focus"
 cask "font-meslo-nerd-font"
 # cask "gitkraken"
@@ -51,9 +51,9 @@ cask "iterm2"
 cask "keepingyouawake"
 cask "kindle"
 # cask "kitematic"
-# cask "microsoft-teams"
-# cask "nordvpn"
-# cask "postman"
+cask "microsoft-teams"
+cask "nordvpn"
+cask "postman"
 cask "qlcolorcode"
 cask "qlimagesize"
 cask "qlmarkdown"
@@ -67,15 +67,15 @@ cask "spotify"
 # cask "steam"
 cask "transmission"
 # cask "transmit"
-# cask "unity-hub"
+cask "unity-hub"
 cask "vcv-rack"
 cask "visual-studio-code"
 cask "vlc"
 cask "youtube-to-mp3"
 # mas "Airmail 3", id: 918858936
-# mas "Bear", id:1091189122
+mas "Bear", id:1091189122
 # mas "Day One", id: 1055511498
 # mas "Magnet", id: 441258766
-# mas "Spark", id: 1176895641
-# mas "Xcode", id: 497799835
+mas "Spark", id: 1176895641
+mas "Xcode", id: 497799835
 # mas "Paste", id: 967805235
