@@ -67,6 +67,7 @@ cask "arturia-software-center"
 cask "audacity"
 cask "audio-hijack"
 cask "bartender"
+cask "bettertouchtool"
 cask "brave-browser"
 cask "discord"
 cask "docker"
@@ -96,6 +97,4 @@ cask "unity-hub"
 cask "visual-studio-code"
 cask "vlc"
 cask "vcv-rack"
-mas "Magnet", id: 441258766
 mas "Spark", id: 1176895641
-
