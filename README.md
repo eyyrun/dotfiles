@@ -260,9 +260,13 @@ echo 'CLIENT_SECRET="urCl13nt53cret"' >> ~/.shpotify.cfg
 ## Other Software
 Here's a list of other software that doesn't have a homebrew package
 ```
-Adobe Lightroom
-Adobe Photoshop
-Canon EOS Utility
+Ableton Live
+Eventide
+Cymatics
+Grammarly
+MOTU audio driver 1248
+Roland Software Center
+Soundtoys
 ```
 
 ## Stay up to date
