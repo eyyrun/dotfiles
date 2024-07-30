@@ -31,9 +31,9 @@ xcode-select --install
 ## Configure Git
 
 ```bash
-git config --global user.name "Birkir Brynjarsson"  
+git config --global user.name "Eyrún Engilbertsdóttir"  
 git config --global user.email "*******@gmail.com"  
-git config --global github.user birkirbrynjarsson
+git config --global github.user eyyrun
 git config --global core.excludesfile ~/.gitignore
 echo .DS_Store >> ~/.gitignore
 ```
@@ -43,7 +43,7 @@ Clone the repository and hide it in Finder with `chflags`
 
 ```bash
 cd ~
-git clone https://github.com/birkirbrynjarsson/dotfiles
+git clone https://github.com/eyyrun/dotfiles
 chflags hidden dotfiles
 cd ~/dotfiles
 ```
