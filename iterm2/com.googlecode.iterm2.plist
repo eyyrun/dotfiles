@@ -3266,7 +3266,7 @@
 			<key>Window Type</key>
 			<integer>0</integer>
 			<key>Working Directory</key>
-			<string>/Users/birkir</string>
+			<string>/Users/eyyrun</string>
 		</dict>
 		<dict>
 			<key>ASCII Anti Aliased</key>
@@ -4076,7 +4076,7 @@
 			<key>Window Type</key>
 			<integer>0</integer>
 			<key>Working Directory</key>
-			<string>/Users/birkir</string>
+			<string>/Users/eyyrun</string>
 		</dict>
 	</array>
 	<key>OnlyWhenMoreTabs</key>
