@@ -183,4 +183,5 @@ case ":$PATH:" in
 esac
 # pnpm end
 
+# GPG
 export GPG_TTY=$(tty)
